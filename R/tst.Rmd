@@ -1,0 +1,27 @@
+---
+title: "tst"
+author: "SQ"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+```{r}
+library(tidyverse)
+library(dplyr)
+library(knitr)
+
+```
+
+```{r}
+
+play_tennis <- read.csv('play_tennis.csv', stringsAsFactors = TRUE)
+# Save as .rda file in the 'data' directory of your project
+save(play_tennis, file = "data/play_tennis.rda")
+
+
+```

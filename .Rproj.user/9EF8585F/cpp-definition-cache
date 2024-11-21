@@ -1,0 +1,46 @@
+[
+    {
+        "file": "C:/Users/sergi/Desktop/Carlos III/Advanced Programming/Decision trees project/myds/src/ds_cpp.cpp",
+        "file_last_write": 1731797016.0,
+        "definitions": [
+            {
+                "usr": "c:@F@gini_impurity_C#$@N@Rcpp@S@Vector>#VI14#@N@Rcpp@ST>1#T@PreserveStorage#S0_#",
+                "kind": 6,
+                "parent_name": "",
+                "name": "gini_impurity_C(Rcpp::NumericVector, Rcpp::NumericVector)",
+                "file": "C:/Users/sergi/Desktop/Carlos III/Advanced Programming/Decision trees project/myds/src/ds_cpp.cpp",
+                "line": 9,
+                "column": 8,
+                "hidden": false
+            },
+            {
+                "usr": "c:@F@best_split_C#$@N@Rcpp@S@Matrix>#VI14#@N@Rcpp@ST>1#T@PreserveStorage#$@N@Rcpp@S@Vector>#VI14#@N@Rcpp@ST>1#T@PreserveStorage#",
+                "kind": 6,
+                "parent_name": "",
+                "name": "best_split_C(Rcpp::NumericMatrix, Rcpp::NumericVector)",
+                "file": "C:/Users/sergi/Desktop/Carlos III/Advanced Programming/Decision trees project/myds/src/ds_cpp.cpp",
+                "line": 23,
+                "column": 15,
+                "hidden": false
+            }
+        ],
+        "hidden": false
+    },
+    {
+        "file": "C:/Users/sergi/Desktop/Carlos III/Advanced Programming/Decision trees project/myds/src/rcpp_hello_world.cpp",
+        "file_last_write": 1731675215.0,
+        "definitions": [
+            {
+                "usr": "c:@F@rcpp_hello_world#",
+                "kind": 6,
+                "parent_name": "",
+                "name": "rcpp_hello_world",
+                "file": "C:/Users/sergi/Desktop/Carlos III/Advanced Programming/Decision trees project/myds/src/rcpp_hello_world.cpp",
+                "line": 6,
+                "column": 6,
+                "hidden": false
+            }
+        ],
+        "hidden": false
+    }
+]

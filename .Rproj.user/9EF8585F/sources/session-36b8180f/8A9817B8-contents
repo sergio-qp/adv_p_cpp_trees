@@ -1,0 +1,83 @@
+---
+title: "Perspectives Report"
+author: "Silvana, Dani, Sergio"
+date: "`r Sys.Date()`"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+
+
+```{r, include = FALSE}
+library(tidyverse)
+library(dplyr)
+library(knitr)
+library(data.table)
+
+#  Read and adapt data
+#-------------------------
+data = fread("SeoulBikeData.csv") %>% mutate
+colnames(data)[2] <- "Count"
+colnames(data)[4] <- "Temperature"
+colnames(data)[5] <- "Humidity"
+colnames(data)[8] <- "Dew"
+colnames(data)
+
+fdata = data[, -c(1,12,13,14) ]
+fdata
+colnames(fdata)<- c("Count", "Hour", "Temperature", "Humidity", "Wind_speed",
+                    "Visibility_10m", "Dew", "Solar_Radiation",
+                    "Rainfall_mm", "Snowfall_cm")
+
+#  Fit initial model
+#---------------------
+variables <- colnames(fdata)
+no_predictors <- c("Count") 
+predictors <- setdiff(variables, no_predictors)
+formula <- as.formula(paste("Count ~", paste(predictors, collapse = " + ")))
+
+model <- lm(formula, data = fdata)
+model
+summary(model)
+
+#  Selection of Variables
+#---------------------------
+library(leaps)
+regs<- regsubsets(Count~., fdata)
+reg_summary <- summary(regs)
+round(reg_summary$adjr2,2)
+
+
+#   Final  Model
+#-------------------
+predictors <- c("Hour", "Temperature", "Humidity", "Solar_Radiation", "Rainfall_mm")
+formula <- as.formula(paste("Count ~", paste(predictors, collapse = " + ")))
+
+model <- lm(formula, data = fdata)
+model
+summary(model)
+
+#  Checking  Assumptions
+#-------------------------
+
+# Normailty
+qqnorm(model$residuals)
+qqline(model$residuals, col = "red")
+
+# Homoscedasticty
+plot(model$fitted.values, model$residuals, main = "Residuals vs Fitted", 
+     xlab = "Fitted values", ylab = "Residuals")
+abline(h = 0, col = "red")
+
+# Independence
+dwtest(model)
+
+
+
+
+```
+

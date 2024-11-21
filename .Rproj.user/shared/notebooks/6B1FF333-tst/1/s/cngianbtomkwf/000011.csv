@@ -1,0 +1,6 @@
+"0","# Save as .rda file in the 'data' directory of your project
+save(play_tennis, file = ""data/play_tennis.rda"")
+"
+"2","Warning: cannot open compressed file 'data/play_tennis.rda', probable reason 'No such file or directory'"
+"2","Error in gzfile(file, ""wb"") : cannot open the connection
+"

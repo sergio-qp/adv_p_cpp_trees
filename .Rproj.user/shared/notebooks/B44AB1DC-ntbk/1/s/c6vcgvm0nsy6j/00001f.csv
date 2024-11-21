@@ -1,0 +1,7 @@
+"0","fdata = data[, -c(1,12,13,14) ]
+fdata
+"
+"0","colnames(fdata)<- c(""Count"", ""Hour"", ""Temperature"", ""Humidity"", ""Wind_speed"","
+"0","                    ""Visibility_10m"", ""Dew"", ""Solar_Radiation"","
+"0","                    ""Rainfall_mm"", ""Snowfall_cm"")"
+"0",""

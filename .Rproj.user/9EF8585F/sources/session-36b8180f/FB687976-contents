@@ -1,0 +1,63 @@
+---
+title: "datasetmakrrr"
+author: "SQ"
+date: "`r Sys.Date()`"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r, include = FALSE}
+library(tidyverse)
+library(dplyr)
+library(knitr)
+
+```
+
+```{r, include = FALSE}
+
+source = read_csv("apriltaxis.csv", show_col_types = FALSE)
+source
+source[order(as.Date(source$`Trip Start Timestamp`, format="%m/%d/%Y")),]
+filtered = source[ -c(1,2,4,7,8) ]
+filtered
+f2 = filtered[ -c(13:18) ]
+f2
+f2$cleaned <- strptime(f2$`Trip Start Timestamp`, "%m/%d/%Y %I:%M:%S %p")
+
+f2$Date <- format(f2$cleaned, "%Y-%m-%d")
+f2$Time <- format(f2$cleaned, "%H:%M:%S")
+
+f3 = f2[ -c(1) ]
+
+f3 = na.omit(f3)
+f3 = f3[f3$`Trip Miles` > 0, ]
+f3
+
+f3$Date = as.Date(f3$Date)
+f3$Time = as.POSIXct(f3$Time, format = "%H:%M")
+
+f3$Day = weekdays(f3$Date, abbr = TRUE)
+f3$Weekend = f3$Day %in% c("Sun", "Sat")
+f3
+
+threshold_night <- as.POSIXct("20:00", format = "%H:%M")
+threshold_day <- as.POSIXct("06:00", format = "%H:%M")
+
+f3$Daytime = ifelse(f3$Time < threshold_night & f3$Time > threshold_day, T, F)
+f3
+
+final = f3[ -c(15,14,13,12,4,3) ]
+final
+
+set.seed(123)
+export <- final[sample(nrow(final), 800), ]
+export
+
+#sample of taxi rides in chicago during april 2023
+# write.csv(export, "april_taxi_sample.csv", row.names = FALSE)
+
+
+```

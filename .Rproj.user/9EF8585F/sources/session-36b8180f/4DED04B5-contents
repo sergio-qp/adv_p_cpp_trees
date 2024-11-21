@@ -1,0 +1,222 @@
+---
+title: "advanced programming notes"
+author: "SQ"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r, include = FALSE}
+library(tidyverse)
+library(dplyr)
+library(Rcpp)
+
+```
+
+## Notes lecture 1
+
+
+```{r, include = FALSE}
+cppFunction('
+int one() {
+return 1;
+}
+')
+
+x = one()
+x
+
+cppFunction("
+double sumC(NumericVector x) {
+int n = x.size();
+double total = 0;
+int i;
+for(i = 0; i < n; i++) {
+total = total + x[i];
+}
+return total;
+}
+")
+
+tvec= c(2,5,6,4)
+s= sumC(tvec)
+s
+
+cppFunction("
+double meanC(NumericVector x) {
+int n = x.size();
+double total = 0;
+int i;
+double mean;
+for(i = 0; i < n; i++) {
+total = total + x[i];
+}
+mean = total/n;
+return mean;
+}
+")
+
+m= meanC(tvec)
+m
+
+cppFunction("
+NumericVector my_check_C(NumericVector x, double c)
+{
+// Obtain the length of vector x
+int n = x.size();
+// Allocate vector that will contain the output
+// Initialize it with x (clone makes a copy of x)
+NumericVector out = clone(x);
+int i;
+for(i = 0; i < n; i++) {
+if(x[i] <= c){
+out[i] = 0;
+}
+}
+// Vector out is returned
+return out;
+}")
+# YOU HAVE TO USE CLONE(X) OR IT JUST MAKES A POINTER INSTEAD OF A COPY
+chk = my_check_C(tvec, 4)
+chk
+
+```
+
+```{r, include = FALSE}
+tst= c(2,1,4,9,8,5)
+#ex 2
+cppFunction("
+NumericVector cumsum_C(NumericVector x)
+{
+// Obtain the length of vector x
+int n = x.size();
+// Allocate vector that will contain the output
+// Initialize it with x (clone makes a copy of x)
+NumericVector out = clone(x);
+int i;
+for(i = 0; i < n; i++) {
+
+int j;
+  for(j = 0; j < i; j++){
+  out[i] = out[i] + x[j];
+  }
+}
+// Vector out is returned
+return out;
+}")
+# although you could have just created an empty vec of size n with NumericVector out(n);
+csum= cumsum_C(tst)
+csum
+
+#ex3
+
+cppFunction("
+NumericVector minmax_C(NumericVector x){
+NumericVector out = NumericVector(2);
+out[0] = min(x);
+out[1] = max(x);
+
+// Vector out is returned
+return out;
+}")
+
+
+
+
+minmax= minmax_C(tst)
+minmax
+
+
+mt <- matrix(1:12, 3, 4)
+mt
+
+cppFunction("
+NumericVector rowSums_C(NumericMatrix mt){
+int nrow = mt.nrow();
+int ncol = mt.ncol();
+NumericVector out(nrow);
+double total;
+int i, j;
+for (i = 0; i < nrow; i++) {
+total = 0;
+  for (j = 0; j < ncol; j++) {
+    total = total + mt(i, j);
+  }
+out[i] = total;
+}
+return out;
+}")
+rowSums_C(mt)
+
+cppFunction("
+NumericVector rowSd_C(NumericMatrix mt) {
+int nrow = mt.nrow();
+int ncol = mt.ncol(); // ncol = N
+NumericVector means(nrow);
+NumericVector out(nrow);
+double total;
+int i, j;
+// loop for rows
+for(i = 0; i < nrow; i++) {
+total = 0;
+// Sugar for computing the row means
+means[i] = mean(mt(i, _));
+// loop for columns
+for (j = 0; j < ncol; j++) {
+// pow is for squaring numbers (instead of ^2)
+total = total + pow(mt(i, j) - means[i], 2.0);
+}
+out[i] = sqrt(total/(ncol-1));
+}
+return out;
+}
+")
+
+rowSd_C(mt)
+
+
+cppFunction("
+NumericVector rowSd_C(NumericMatrix mt) {
+int nrow = mt.nrow();
+NumericVector out(nrow);
+int i;
+// All sugar: we just use sd
+for (i = 0; i < nrow; i++) {
+out[i] = sd(mt(i, _));
+}
+return out;
+}")
+rowSd_C(mt)
+
+cppFunction('
+NumericMatrix my_info(NumericMatrix mt) {
+int nrow = mt.nrow();
+int ncol = mt.ncol();
+
+NumericMatrix out(nrow,ncol);
+int i;
+
+for (i = 0; i < nrow; i++) {
+out(i,0) = min(mt(i, _));
+out(i,1) = max(mt(i, _));
+out(i,2) = mean(mt(i, _));
+out(i,3) = sd(mt(i, _));
+}
+return out;
+}
+')
+my_info(mt)
+
+
+
+```
+
+```{r, include = FALSE}
+
+
+
+```
+

@@ -1,0 +1,7 @@
+library(myds)
+
+X
+y
+
+best_split_R(X, y)
+best_split_C(X, y)
